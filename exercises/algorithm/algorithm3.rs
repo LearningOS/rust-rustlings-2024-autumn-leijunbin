@@ -3,10 +3,35 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn order<T:Ord>(array: &mut [T], start: usize, end: usize) -> usize {
+    let mut first_index = start;
+    
+    for index in start + 1..end {
+        if array[index] < array[start] {
+            first_index += 1;
+            array.swap(first_index, index);
+        }
+    }
+
+    array.swap(start, first_index);
+
+    first_index
+}
+
+fn quick_sort<T:Ord>(array: &mut [T], start: usize, end: usize) {
+    if start >= end {
+        return;
+    }
+
+    let dif = order(array, start, end);
+
+    quick_sort(array, start, dif);
+    quick_sort(array, dif + 1, end);
+}
+
+fn sort<T:Ord>(array: &mut [T]){
+	quick_sort(array, 0, array.len());
 }
 #[cfg(test)]
 mod tests {
